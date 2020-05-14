@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What's the weather like?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+</head>
+<body style="background-color: wheat">
+    <section class="hero is-dark">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+               Get the weather!
+            </h1>
+          </div>
+        </div>
+    </section>
+    <section class="section">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="notification is-danger">
+                <button class="delete"></button>
+                <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <div class="container">
+            <div class="columns">   
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button class="button is-info">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    {% for weather in all_weather %}
+                    <div class="box" style="box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.75);">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <img src="http://openweathermap.org/img/w/10d.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{ weather.city }}</span>
+                                        <br>
+                                        <span class="subtitle">{{ weather.temperature }}°F</span>
+                                        <br> {{ weather.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="background-color: #202020;">
+        <div class="container">
+            <h4 style="color: white">
+                Footer
+            </h4>
+        </div>
+        
+      </footer>
+
+      
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+         (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            $notification = $delete.parentNode;
+
+            $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
